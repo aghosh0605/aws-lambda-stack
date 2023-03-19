@@ -1,6 +1,8 @@
 {
-  "name": "replaced-by-user-input",
-  "description": "replaced-by-user-input",
+  "name": "recruitment-portal-v1",
+  "description": "HTBSRMIST recruitment automation with recruitment portal",
+  "author": "HTBSRMIST",
+  "license": "MIT",
   "version": "0.0.1",
   "private": true,
   "dependencies": {},
@@ -13,8 +15,8 @@
   "scripts": {
     "build": "tsc",
     "watch": "tsc -w",
-    "local": "sam build --use-container && sam local start-api",
-    "deploy": "sam deploy --guided",
+    "local": "tsc && sam build --use-container && sam local start-api",
+    "deploy": "tsc && sam deploy --guided",
     "debug": "sam validate --debug"
   },
   "files": [
