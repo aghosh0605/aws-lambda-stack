@@ -15,27 +15,54 @@ Transform:
 # Resources declares the AWS resources that you want to include in the stack
 # https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/resources-section-structure.html
 Resources:
+  ApiResource:
+    Type: AWS::Serverless::Api
+    Properties:
+      StageName: prod
   # Each Lambda function is defined by properties:
   # https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
 
   # This is a Lambda function config associated with healthcheck
-  recruitmentPortalV1:
+  healthcheckFunction:
     Type: AWS::Serverless::Function
     Properties:
       Handler: dist/handlers/healthcheck.healthcheckRoute
       Runtime: nodejs18.x
-      MemorySize: 128
-      Timeout: 100
+      # MemorySize: 128
+      # Timeout: 100
       Description: A Lambda function to check health of recruitment portal
       Policies:
-        # Give Lambda basic execution Permission to the helloFromLambda
+        # Give Lambda basic execution Permission to the function
         - AWSLambdaBasicExecutionRole
       Events:
-        HelloWorld:
+        HealthCheckAPI:
           Type: Api
           Properties:
             Path: /healthcheck
             Method: get
+  # This is a Lambda function config associated with authentication
+  authFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: dist/handlers/auth.authRoutes
+      Runtime: nodejs18.x
+      # MemorySize: 128
+      # Timeout: 100
+      Description: A Lambda function to authenticate in recruitment portal
+      Policies:
+        # Give Lambda basic execution Permission to the function
+        - AWSLambdaBasicExecutionRole
+      Events:
+        SignUpAPI:
+          Type: Api
+          Properties:
+            Path: /auth/signup
+            Method: post
+        SignInAPI:
+          Type: Api
+          Properties:
+            Path: /auth/signin
+            Method: post
 
 Outputs:
   RecruitmentPortalURL:

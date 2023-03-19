@@ -17,6 +17,7 @@ export const healthcheckRoute: ProxyHandler = async (event, context) => {
       statusCode: 201,
       body: JSON.stringify({
         message: healthcheck,
+        data: event,
       }),
     };
   } catch (error) {
