@@ -1,0 +1,12 @@
+version = 0.1
+[default]
+[default.deploy]
+[default.deploy.parameters]
+stack_name = "htbsrmist-recruitment-portal-v1"
+s3_bucket = "aws-sam-cli-managed-default-samclisourcebucket-8nf53n8h5e2s"
+s3_prefix = "htbsrmist-recruitment-portal-v1"
+region = "ap-south-1"
+confirm_changeset = true
+capabilities = "CAPABILITY_IAM"
+disable_rollback = true
+image_repositories = []
