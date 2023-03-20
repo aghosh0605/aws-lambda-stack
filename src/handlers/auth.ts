@@ -1,46 +1,53 @@
-import {
-  Handler,
-  APIGatewayProxyEventV2,
-  APIGatewayProxyResultV2,
-} from "aws-lambda";
+import { APIGatewayProxyResult, APIGatewayEvent, Handler } from "aws-lambda";
+import { session } from "../services/auth/getSession.service";
+import { handleSignin } from "../services/auth/signin.service";
+import { handleSignout } from "../services/auth/signout.service";
+import { handleSignup } from "../services/auth/signup.service";
 
-import { connectSupabase as supabase } from "../utils/supabase";
-
-type ProxyHandler = Handler<APIGatewayProxyEventV2, APIGatewayProxyResultV2>;
+type ProxyHandler = Handler<APIGatewayEvent, APIGatewayProxyResult>;
 
 export const authRoutes: ProxyHandler = async (event, context) => {
   try {
-    const { data, error } = await supabase().auth.signUp({
-      email: "example@email.com",
-      password: "example-password",
-      options: {
-        data: {
-          first_name: "John",
-          age: 27,
-        },
-      },
-    });
-
-    if (error) {
-      throw {
-        statusCode: 400,
-        message: "Error in Creating Account!!",
+    if (event.path === "/auth/signin" && event.httpMethod === "POST") {
+      return await handleSignin(event);
+    } else if (event.path === "/auth/signup" && event.httpMethod === "POST") {
+      return await handleSignup(event);
+    } else if (event.path === "/auth/signout" && event.httpMethod === "GET") {
+      return await handleSignout();
+    } else if (event.path === "/auth/session" && event.httpMethod === "GET") {
+      return await session();
+    } else {
+      return {
+        statusCode: 403,
+        body: JSON.stringify({
+          message: "HTTP Request not allowded",
+          data: null,
+        }),
       };
     }
-
-    return {
-      statusCode: 201,
-      body: JSON.stringify({
-        message: data,
-      }),
-    };
   } catch (err: any) {
-    console.log("Internal Server Error: ", err);
-    return {
-      statusCode: err.statusCode || 500,
-      body: JSON.stringify({
-        message: err.message || "Internal Server Error",
-      }),
-    };
+    if (err.name === "ValidationError") {
+      //Yup Errors will come here
+      let message: string = "";
+      err.errors.forEach((e: string) => {
+        message += `${e}. `;
+      });
+      return {
+        statusCode: 404,
+        body: JSON.stringify({
+          message: "Input Validation Error",
+          data: message,
+        }),
+      };
+    } else {
+      console.log("Internal Server Server: \n", err.stack || err);
+      return {
+        statusCode: err.statusCode || 500,
+        body: JSON.stringify({
+          message: err.message || "Internal Server Error",
+          data: err.stack || null, //Supabase Error Comes in Stack
+        }),
+      };
+    }
   }
 };
