@@ -15,10 +15,6 @@ Transform:
 # Resources declares the AWS resources that you want to include in the stack
 # https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/resources-section-structure.html
 Resources:
-  ApiResource:
-    Type: AWS::Serverless::Api
-    Properties:
-      StageName: prod
   # Each Lambda function is defined by properties:
   # https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
 
@@ -31,9 +27,10 @@ Resources:
       # MemorySize: 128
       # Timeout: 100
       Description: A Lambda function to check health of recruitment portal
-      Policies:
-        # Give Lambda basic execution Permission to the function
-        - AWSLambdaBasicExecutionRole
+      # Policies:
+      #   # Give Lambda basic execution Permission to the function
+      #   - AWSLambdaBasicExecutionRole
+      Role: arn:aws:iam::665123895031:role/lambda-role-recruitment-portal-v1
       Events:
         HealthCheckAPI:
           Type: Api
@@ -49,9 +46,10 @@ Resources:
       # MemorySize: 128
       # Timeout: 100
       Description: A Lambda function to authenticate in recruitment portal
-      Policies:
-        # Give Lambda basic execution Permission to the function
-        - AWSLambdaBasicExecutionRole
+      # Policies:
+      #   # Give Lambda basic execution Permission to the function
+      #   - AWSLambdaBasicExecutionRole
+      Role: arn:aws:iam::665123895031:role/lambda-role-recruitment-portal-v1
       Events:
         SignUpAPI:
           Type: Api

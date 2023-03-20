@@ -17,11 +17,11 @@
     "typescript": "^5.0.2"
   },
   "scripts": {
-    "build": "tsc",
+    "build": "tsc && sam build",
     "watch": "tsc -w",
     "local": "tsc && sam build --use-container && sam local start-api",
-    "deploy": "tsc && sam deploy --guided",
-    "debug": "sam validate --debug"
+    "deploy": "tsc && sam build && sam deploy --guided",
+    "debug": "tsc && sam build && sam validate --debug"
   },
   "files": [
     "dist/",
