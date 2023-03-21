@@ -10,6 +10,7 @@
 - https://dbartholomae.github.io/lambda-middleware/
 - https://github.com/aws-samples/aws-serverless-samfarm/issues/5
 - https://aws.amazon.com/premiumsupport/knowledge-center/lambda-sam-template-permissions/
+- https://supabase.com/docs/guides/auth/server-side-rendering
 
 ## Important Files:
 
