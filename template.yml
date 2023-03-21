@@ -30,7 +30,7 @@ Resources:
       # Policies:
       #   # Give Lambda basic execution Permission to the function
       #   - AWSLambdaBasicExecutionRole
-      Role: arn:aws:iam::665123895031:role/lambda-role-recruitment-portal-v1
+      Role: arn:aws:iam::XXXXXXXXXXXXX:role/lambda-role-recruitment-portal-v1 #Role with LambdaBasicExecutionRole Policy
       Events:
         HealthCheckAPI:
           Type: Api
@@ -49,7 +49,7 @@ Resources:
       # Policies:
       #   # Give Lambda basic execution Permission to the function
       #   - AWSLambdaBasicExecutionRole
-      Role: arn:aws:iam::665123895031:role/lambda-role-recruitment-portal-v1
+      Role: arn:aws:iam::XXXXXXXXXXXXXX:role/lambda-role-recruitment-portal-v1 #Role with LambdaBasicExecutionRole Policy
       Events:
         SignUpAPI:
           Type: Api
@@ -61,6 +61,16 @@ Resources:
           Properties:
             Path: /auth/signin
             Method: post
+        GetSessionAPI:
+          Type: Api
+          Properties:
+            Path: /auth/session
+            Method: get
+        SignoutAPI:
+          Type: Api
+          Properties:
+            Path: /auth/signout
+            Method: get
 
 Outputs:
   RecruitmentPortalURL:

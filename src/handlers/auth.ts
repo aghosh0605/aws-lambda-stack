@@ -1,10 +1,14 @@
-import { APIGatewayProxyResult, APIGatewayEvent, Handler } from "aws-lambda";
+import {
+  APIGatewayProxyResult,
+  Handler,
+  APIGatewayProxyEvent,
+} from "aws-lambda";
 import { session } from "../services/auth/getSession.service";
 import { handleSignin } from "../services/auth/signin.service";
 import { handleSignout } from "../services/auth/signout.service";
 import { handleSignup } from "../services/auth/signup.service";
 
-type ProxyHandler = Handler<APIGatewayEvent, APIGatewayProxyResult>;
+type ProxyHandler = Handler<APIGatewayProxyEvent, APIGatewayProxyResult>;
 
 export const authRoutes: ProxyHandler = async (event, context) => {
   try {
@@ -15,7 +19,7 @@ export const authRoutes: ProxyHandler = async (event, context) => {
     } else if (event.path === "/auth/signout" && event.httpMethod === "GET") {
       return await handleSignout();
     } else if (event.path === "/auth/session" && event.httpMethod === "GET") {
-      return await session();
+      return await session(event);
     } else {
       return {
         statusCode: 403,
